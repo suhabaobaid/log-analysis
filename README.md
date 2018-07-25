@@ -32,7 +32,7 @@ vagrant up
 vagrant ssh
 ```
 3. Change the directory to vagrant(this is the shared folder, use ls command):
-```
+```bash
 cd /vagrant
 ```
 4. To log out of the VM use ctrl-C or the command (it may be needed to be done twice):
@@ -50,16 +50,18 @@ psql -d news
 ```
 3. Create Views, while connected to the news database:
 This a view needed for the running of the program
-```
+```sql
 CREATE VIEW articles_view AS
 SELECT title, author, count(log.id) AS views
-FROM articles, log where log.path LIKE concat('%', articles.slug)
-GROUP BY title, author 
+FROM articles, log where log.path LIKE concat('%',articles.slug)
+GROUP BY title, author
 ORDER BY views DESC;
 ```
 #### Running the queries
 1. From the vagrant directory (within the virtual machine) run the program by:
-`python logAnalysis.py`
+```bash
+python logAnalysis.py
+```
 
 #### Output
 You should get an output as logAnalysisOutput.txt in your terminal
