@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 import psycopg2
 
 DBNAME = "news"
@@ -31,7 +32,7 @@ def printResult(question, result, resultIndex):
     '''
     print("\n" + question + "\n")
     for item in result:
-        print (item[0] + "\t" + "- " + str(item[resultIndex]) + " views")
+        print("{}\t- {} views".format(item[0], item[resultIndex]))
 
 
 def printErrorResult(question, result):
@@ -40,8 +41,9 @@ def printErrorResult(question, result):
     '''
     print("\n" + question + "\n")
     for error in result:
-        print(error[0].strftime('%B %d, %Y') + " - " +
-              str(round(error[1] * 100, 3)) + "% errors")
+        print("{} - {} % errors".format(
+            error[0].strftime('%B %d, %Y'),
+            str(round(error[1] * 100, 3))))
 
 
 def getMostPopularArticles():
@@ -95,8 +97,7 @@ def getErroneousDays():
         JOIN (
         SELECT date_trunc('day', time) AS day, count(*) AS error_num
         FROM log
-        WHERE status LIKE '%4%'
-        OR status LIKE '%5%'
+        WHERE status >= '400'
         GROUP BY(day)
         ) t2
         ON t1.day = t2.day
